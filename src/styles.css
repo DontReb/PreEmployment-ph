@@ -1,0 +1,93 @@
+.dash {
+    display: flex;
+    background-color: #2f2f2f;
+    text-align: left;
+    color: white;
+    font-weight: bolder;
+    padding: 30px;
+    justify-content: space-between;
+    border-radius: 80px;
+    margin-top: 20px;
+}
+
+body {
+    
+    background-color: #92b4a7;
+    font-family: "Sora";
+}
+
+.dash h1 {
+    font-size: 20px;
+    padding-left: 20px;
+}
+
+.dash ul {
+    display: flex;
+    gap: 50px;
+    padding-right: 20px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.cont {
+    border: 2px solid black;
+    margin: 10px;
+}
+
+.dash a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.profile {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.profile-name {
+    color: white;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #2f2f2f;
+    border-radius: 8px;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    min-width: 160px;
+    z-index: 100;
+}
+
+.dropdown li {
+    padding: 8px 16px;
+}
+
+.dropdown li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown li:hover {
+    background-color: #444;
+}
+
+.profile:hover .dropdown {
+    display: block;
+}
