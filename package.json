@@ -1,12 +1,11 @@
 {
-  "name": "package",
+  "name": "preemployment-ph",
   "version": "0.0.0",
   "private": true,
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "license": "ISC",
-  "author": "",
+  "description": "A step-by-step guide for first-time job seekers in the Philippines completing their pre-employment requirements.",
+  "license": "MIT",
+  "author": "Liv Clarence A. Torres",
   "type": "module",
-  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
