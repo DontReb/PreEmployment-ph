@@ -1,93 +1,33 @@
-.dash {
-    display: flex;
-    background-color: #2f2f2f;
-    text-align: left;
-    color: white;
-    font-weight: bolder;
-    padding: 30px;
-    justify-content: space-between;
-    border-radius: 80px;
-    margin-top: 20px;
+@import "tailwindcss";
+
+/*
+  Design tokens. Every value here becomes a Tailwind class automatically:
+  --color-brand-600 -> bg-brand-600, text-brand-600, border-brand-600 ...
+  --font-sans       -> font-sans (and the default font for the whole page)
+  Change a color here and it updates everywhere it's used.
+*/
+@theme {
+  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+
+  /* Sage green, built around the original #92b4a7 (brand-400) */
+  --color-brand-50: #f3f8f6;
+  --color-brand-100: #e2eee9;
+  --color-brand-200: #c6ddd4;
+  --color-brand-300: #a8cabc;
+  --color-brand-400: #92b4a7;
+  --color-brand-500: #6a9a88;
+  --color-brand-600: #527f6e;
+  --color-brand-700: #43675a;
+  --color-brand-800: #39544b;
+  --color-brand-900: #30463f;
+
+  /* Text colors */
+  --color-ink: #1f2a27;
+  --color-ink-muted: #4b5a55;
 }
 
-body {
-    
-    background-color: #92b4a7;
-    font-family: "Sora";
-}
-
-.dash h1 {
-    font-size: 20px;
-    padding-left: 20px;
-}
-
-.dash ul {
-    display: flex;
-    gap: 50px;
-    padding-right: 20px;
-}
-
-ul {
-    list-style-type: none;
-}
-
-.cont {
-    border: 2px solid black;
-    margin: 10px;
-}
-
-.dash a {
-    text-decoration: none;
-    color: white;
-}
-
-
-.profile {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.profile-pic {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    vertical-align: middle;
-}
-
-.profile-name {
-    color: white;
-    font-weight: bold;
-    margin-left: 8px;
-}
-
-.dropdown {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: #2f2f2f;
-    border-radius: 8px;
-    list-style: none;
-    padding: 10px 0;
-    margin: 0;
-    min-width: 160px;
-    z-index: 100;
-}
-
-.dropdown li {
-    padding: 8px 16px;
-}
-
-.dropdown li a {
-    color: white;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown li:hover {
-    background-color: #444;
-}
-
-.profile:hover .dropdown {
-    display: block;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

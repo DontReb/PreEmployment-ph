@@ -1,16 +1,11 @@
-import React from "react";
+import Section from './Section.jsx'
 
 function Guides() {
-    return (
-        <section id="guides">
-            <div className="cont">
-                <h2>Guides</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
-                </p>
-            </div>
-        </section>
-    );
+  return (
+    <Section id="guides" title="Guides">
+      <p>Step-by-step guides are coming soon.</p>
+    </Section>
+  )
 }
 
-export default Guides;
+export default Guides

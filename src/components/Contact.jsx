@@ -1,17 +1,11 @@
-import React from "react";
+import Section from './Section.jsx'
 
 function Contact() {
   return (
-    <section id="contact">
-      <div className="cont">
-        <h2>Contact</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua...
-        </p>
-      </div>
-    </section>
-  );
+    <Section id="contact" title="Contact">
+      <p>Contact details are coming soon.</p>
+    </Section>
+  )
 }
 
-export default Contact;
+export default Contact

@@ -1,16 +1,11 @@
-import React from "react";
+import Section from './Section.jsx'
 
 function FAQs() {
-    return (
-        <section id="faqs">
-            <div className="cont">
-                <h2>FAQs</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
-                </p>
-            </div>
-        </section>
-    );
+  return (
+    <Section id="faqs" title="FAQs">
+      <p>Answers to common questions are coming soon.</p>
+    </Section>
+  )
 }
 
-export default FAQs;
+export default FAQs
