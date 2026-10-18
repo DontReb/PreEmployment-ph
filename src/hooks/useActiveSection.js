@@ -50,12 +50,20 @@ function useActiveSection(ids) {
       setActiveId(current)
     }
 
+    // Scroll events fire many times per frame. requestAnimationFrame measures
+    // the page at most once per frame, which keeps scrolling smooth.
+    let frame = null
     function handleScroll() {
       if (followingLink.current) {
         finishFollowingLinkSoon(150)
         return
       }
-      updateFromScroll()
+      if (frame === null) {
+        frame = requestAnimationFrame(() => {
+          frame = null
+          updateFromScroll()
+        })
+      }
     }
 
     if (!followingLink.current) updateFromScroll()
@@ -64,6 +72,7 @@ function useActiveSection(ids) {
 
     // Cleanup: stop listening when the component goes away
     return () => {
+      cancelAnimationFrame(frame)
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', updateFromScroll)
     }

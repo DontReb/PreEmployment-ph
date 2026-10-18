@@ -11,9 +11,10 @@
 */
 @theme {
   /* Body text uses the device's own system font (most legible at small sizes).
-     Sora is saved for headings, where it carries the brand. */
+     Sora is saved for headings, where it carries the brand. It's bundled with
+     the site (see main.jsx), so pages don't wait on Google Fonts. */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
 
   --color-surface: #f3f8f6;         /* page background */
   --color-surface-raised: #ffffff;  /* bars, cards */

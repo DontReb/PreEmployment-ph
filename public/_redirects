@@ -1,0 +1,3 @@
+# Netlify: send every page address to the React app, which shows the right page.
+# Real files (images, scripts, robots.txt) are still served as normal.
+/*    /index.html    200
