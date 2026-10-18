@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import { Analytics } from '@vercel/analytics/react'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import ScrollManager from './components/ScrollManager.jsx'
@@ -24,6 +25,9 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      {/* Counts visits anonymously (no cookies). Shows up in Vercel → Analytics.
+          It only runs on the live site, never while developing. */}
+      <Analytics />
     </div>
   )
 }

@@ -276,7 +276,8 @@ function AccountPage() {
           <p className="mt-2">
             PreEmployment.ph saves only your email address and which documents you’ve marked
             ready. It’s used only to keep your checklist, never shared or sold, and you can delete
-            it anytime from this page.
+            it anytime from this page. Visits to the site are counted anonymously, without
+            cookies.
           </p>
         </section>
       )}
