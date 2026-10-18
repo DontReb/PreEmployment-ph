@@ -5,6 +5,7 @@ import ScrollManager from './components/ScrollManager.jsx'
 import HomePage from './pages/HomePage.jsx'
 import RequirementPage from './pages/RequirementPage.jsx'
 import ChecklistPage from './pages/ChecklistPage.jsx'
+import AccountPage from './pages/AccountPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/requirements/:id" element={<RequirementPage />} />
           <Route path="/checklist" element={<ChecklistPage />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
