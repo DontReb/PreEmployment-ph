@@ -1,12 +1,11 @@
 {
-  "name": "package",
+  "name": "preemployment-ph",
   "version": "0.0.0",
   "private": true,
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "license": "ISC",
-  "author": "",
+  "description": "A step-by-step guide for first-time job seekers in the Philippines completing their pre-employment requirements.",
+  "license": "MIT",
+  "author": "Liv Clarence A. Torres",
   "type": "module",
-  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,6 +18,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
@@ -26,6 +26,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "tailwindcss": "^4.3.3",
     "vite": "^7.1.2"
   }
 }
