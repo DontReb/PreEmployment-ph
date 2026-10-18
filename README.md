@@ -133,7 +133,7 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 
 ## 👨‍💻 Author & Maintainer
 Liv Clarence A. Torres
-📧 Email: ayentorres0503@gmail.com
+📧 Email: preemploymentph@gmail.com
 🌐 [LinkedIn](https://www.linkedin.com/in/liv-clarence-torres-5b8650213/)
 
 _"Every accomplished worker began with a first step. This is yours. Padayon!"_

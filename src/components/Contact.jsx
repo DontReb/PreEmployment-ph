@@ -1,6 +1,6 @@
 import Section from './Section.jsx'
 
-const EMAIL = 'ayentorres0503@gmail.com'
+const EMAIL = 'preemploymentph@gmail.com'
 const ISSUES_URL = 'https://github.com/DontReb/PreEmployment-ph/issues'
 
 function Contact() {
