@@ -21,6 +21,7 @@ It also explains the **First Time Jobseekers Assistance Act (RA 11261)**, which 
 - **Guides:** the RA 11261 free documents rules and the order that saves the most time
 - **Search and filters:** find documents by name, or show only online, in-person, free, or not-ready-yet ones
 - **Printable checklist:** one page with tickable boxes, ready to print or save as PDF
+- **Optional accounts:** sign in with a 6-digit email code (no password) to keep your checklist on any device
 - **FAQs and contact:** quick answers, plus a way to report changed fees or steps
 - **Built for everyone:** works on small phones and large text sizes, follows dark mode, and works with a keyboard and screen readers
 
@@ -37,7 +38,8 @@ It also explains the **First Time Jobseekers Assistance Act (RA 11261)**, which 
 - **React 19:** component-based UI
 - **Vite 7:** fast development server and build
 - **Tailwind CSS 4:** styling with design tokens (light, dark, and high-contrast)
-- **React Router 8:** a page for each requirement, plus the checklist
+- **React Router 8:** a page for each requirement, plus the checklist and account pages
+- **Supabase:** sign-in with email codes and a database for saved progress (optional)
 - **Sora** (self-hosted with `@fontsource-variable/sora`) for headings, the device's system font for body text
 
 ---
@@ -88,16 +90,42 @@ PreEmployment-ph/
 │   │   └── ui/              # Small shared pieces: Icon, CostBadge, ReadyCheckbox
 │   ├── data/                # All site content (see "Updating the Content")
 │   ├── hooks/               # useActiveSection: highlights the section you're reading
-│   ├── pages/               # HomePage, RequirementPage, ChecklistPage, NotFoundPage
-│   ├── progress/            # Checklist progress, shared with React context, saved in localStorage
+│   ├── account/             # Sign-in state (AuthProvider, useAuth) and the sync status line
+│   ├── lib/supabase.js      # Connects to Supabase when its settings exist
+│   ├── pages/               # HomePage, RequirementPage, ChecklistPage, AccountPage, NotFoundPage
+│   ├── progress/            # Checklist progress: on the device, and in the account when signed in
 │   ├── App.jsx              # Layout and routes
 │   ├── main.jsx             # Entry point
 │   └── styles.css           # Tailwind and design tokens
 ├── docs/screenshots/        # Images used in this README
+├── supabase/schema.sql      # Database table and security rules for accounts
 ├── .env                     # VITE_SITE_URL, the public address used in link previews
 ├── vercel.json              # Vercel: lets /requirements/... links work when opened directly
 └── index.html               # Page title, description, icons, link preview tags
 ```
+
+---
+
+## 👤 Setting Up Accounts (optional)
+
+Without this, the site works fine and saves progress on each device only. Accounts let people keep their checklist on any device. It takes about 15 minutes:
+
+1. **Create a project.** Sign up at [supabase.com](https://supabase.com) (free) and create a project. Choose the **Singapore** region, the closest to the Philippines.
+2. **Create the database table.** Open **SQL Editor**, paste everything from [`supabase/schema.sql`](supabase/schema.sql), and click **Run**. This creates the progress table and the security rules that stop anyone from reading someone else's data.
+3. **Send codes instead of links.** Open **Authentication → Emails → Templates → Magic Link** and make the message show the code, for example:
+   ```html
+   <h2>Your PreEmployment.ph code</h2>
+   <p>Enter this code to sign in: <strong>{{ .Token }}</strong></p>
+   <p>If you didn't ask for this, you can ignore this email.</p>
+   ```
+4. **Set your site address.** In **Authentication → URL Configuration**, set the **Site URL** to your live address.
+5. **Connect the site.** In **Project Settings → API Keys**, copy the **Project URL** and the **publishable key**.
+   - On your computer: copy `.env.example` to `.env.local` and paste both values.
+   - On Vercel: **Settings → Environment Variables**, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`, then redeploy.
+
+**Before launching to many people:** Supabase's built-in email sender only allows a few emails per hour and is meant for testing. Connect a free email service (for example Resend or Brevo) under **Authentication → Emails → SMTP Settings** so every sign-in code arrives.
+
+**How saving works:** guests' progress stays on their device. When someone signs in, what's on the device and what's in the account are combined, so nothing is lost. Signing out clears the device (useful on shared phones and internet cafés), and people can delete their account and data from the Account page.
 
 ---
 

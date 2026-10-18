@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import useActiveSection from '../hooks/useActiveSection.js'
+import useAuth from '../account/useAuth.js'
 
 const links = [
   { id: 'home', label: 'Home' },
@@ -22,6 +23,9 @@ function Navbar() {
   if (pathname === '/') activeId = sectionOnHomePage
   else if (pathname.startsWith('/requirements/')) activeId = 'requirements'
   const menuButtonRef = useRef(null)
+  const { enabled: accountsEnabled, user } = useAuth()
+  const accountLabel = user ? 'Account' : 'Sign in'
+  const onAccountPage = pathname === '/account'
 
   // Escape closes the phone menu and puts keyboard focus back on the button
   useEffect(() => {
@@ -49,7 +53,7 @@ function Navbar() {
         </Link>
 
         {/* Desktop links: hidden on small screens, shown from md (768px) up */}
-        <ul className="hidden gap-1 md:flex">
+        <ul className="hidden gap-1 md:ml-auto md:flex">
           {links.map((link) => {
             const isActive = link.id === activeId
             return (
@@ -69,6 +73,16 @@ function Navbar() {
             )
           })}
         </ul>
+
+        {accountsEnabled && (
+          <Link
+            to="/account"
+            aria-current={onAccountPage ? 'page' : undefined}
+            className="hidden min-h-9 items-center rounded-full px-4 text-sm font-semibold text-accent-ink ring-1 ring-outline transition-colors hover:bg-accent-soft active:bg-accent-soft md:ml-2 md:inline-flex"
+          >
+            {accountLabel}
+          </Link>
+        )}
 
         {/* Mobile menu button: 44x44, only visible below md */}
         <button
@@ -105,6 +119,20 @@ function Navbar() {
               </li>
             )
           })}
+          {accountsEnabled && (
+            <li className="mt-1 border-t border-separator pt-1">
+              <Link
+                to="/account"
+                onClick={() => setIsOpen(false)}
+                aria-current={onAccountPage ? 'page' : undefined}
+                className={`block rounded-xl px-3 py-3 font-semibold active:bg-accent-soft ${
+                  onAccountPage ? 'bg-accent-soft text-accent-ink' : 'text-accent-ink'
+                }`}
+              >
+                {accountLabel}
+              </Link>
+            </li>
+          )}
         </ul>
       )}
     </header>
