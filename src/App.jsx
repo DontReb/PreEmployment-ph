@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx'
 import ScrollManager from './components/ScrollManager.jsx'
 import HomePage from './pages/HomePage.jsx'
 import RequirementPage from './pages/RequirementPage.jsx'
+import ChecklistPage from './pages/ChecklistPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/requirements/:id" element={<RequirementPage />} />
+          <Route path="/checklist" element={<ChecklistPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
