@@ -108,22 +108,25 @@ PreEmployment-ph/
 
 ## 👤 Setting Up Accounts (optional)
 
-Without this, the site works fine and saves progress on each device only. Accounts let people keep their checklist on any device. It takes about 15 minutes:
+Without this, the site works fine and saves progress on each device only. Accounts let people keep their checklist on any device. It takes about 20 minutes:
 
 1. **Create a project.** Sign up at [supabase.com](https://supabase.com) (free) and create a project. Choose the **Singapore** region, the closest to the Philippines.
 2. **Create the database table.** Open **SQL Editor**, paste everything from [`supabase/schema.sql`](supabase/schema.sql), and click **Run**. This creates the progress table and the security rules that stop anyone from reading someone else's data.
-3. **Send codes instead of links.** Open **Authentication → Emails → Templates → Magic Link** and make the message show the code, for example:
+3. **Connect an email sender (required).** Supabase's built-in sender only delivers to your own team's addresses, and new free projects can't edit email templates until their own sender is connected. Gmail works well and is free (about 500 emails a day):
+   - In the Gmail account, turn on **2-Step Verification**, then create an **App password** at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords).
+   - In Supabase, open **Authentication → Emails → SMTP Settings**, turn on custom SMTP, and enter: host `smtp.gmail.com`, port `587`, username and sender email = the Gmail address, password = the 16-character app password, sender name `PreEmployment.ph`.
+4. **Send codes instead of links.** In **Authentication → Emails → Templates**, edit **both** templates: **Confirm signup** (used the first time someone signs in) and **Magic Link** (used after that). Set each subject to `Your PreEmployment.ph sign-in code` and the message to:
    ```html
    <h2>Your PreEmployment.ph code</h2>
    <p>Enter this code to sign in: <strong>{{ .Token }}</strong></p>
    <p>If you didn't ask for this, you can ignore this email.</p>
    ```
-4. **Set your site address.** In **Authentication → URL Configuration**, set the **Site URL** to your live address.
-5. **Connect the site.** In **Project Settings → API Keys**, copy the **Project URL** and the **publishable key**.
-   - On your computer: copy `.env.example` to `.env.local` and paste both values.
+5. **Set your site address.** In **Authentication → URL Configuration**, set the **Site URL** to your live address.
+6. **Connect the site.** In **Project Settings → API Keys**, copy the **publishable key** (starts with `sb_publishable_`). The **Project URL** is `https://<your-project-id>.supabase.co`, also shown under **Connect** at the top of the dashboard.
+   - On your computer: copy `.env.example` to `.env.local`, paste both values, and restart `npm run dev`.
    - On Vercel: **Settings → Environment Variables**, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`, then redeploy.
 
-**Before launching to many people:** Supabase's built-in email sender only allows a few emails per hour and is meant for testing. Connect a free email service (for example Resend or Brevo) under **Authentication → Emails → SMTP Settings** so every sign-in code arrives.
+Never put the **secret** key (`sb_secret_...`) in the site or in git. The site only needs the publishable key.
 
 **How saving works:** guests' progress stays on their device. When someone signs in, what's on the device and what's in the account are combined, so nothing is lost. Signing out clears the device (useful on shared phones and internet cafés), and people can delete their account and data from the Account page.
 
