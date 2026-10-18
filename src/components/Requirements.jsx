@@ -1,16 +1,18 @@
 import { Link } from 'react-router'
 import Section from './Section.jsx'
+import Icon from './ui/Icon.jsx'
+import CostBadge from './ui/CostBadge.jsx'
 import requirements from '../data/requirements.js'
 
 function Requirements() {
   return (
     <Section id="requirements" title="Requirements">
       <p className="max-w-2xl text-pretty">
-        Most employers ask for these {requirements.length} documents. Open one to see what it is
-        and where to get it.
+        Most employers ask for these {requirements.length} documents. They’re listed in the order
+        that usually works best. Open one to see the cost, what to bring, and the steps.
       </p>
 
-      <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+      <ol className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {requirements.map((item) => (
           <li key={item.id}>
             <Link
@@ -21,23 +23,18 @@ function Requirements() {
                 <h3 className="font-semibold text-ink">{item.name}</h3>
                 <p className="mt-0.5 text-sm text-ink-muted">{item.agencyName}</p>
                 <p className="mt-3 text-ink-muted">{item.summary}</p>
+                <div className="mt-4">
+                  <CostBadge requirement={item} />
+                </div>
               </div>
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 20 20"
+              <Icon
+                name="chevronRight"
                 className="mt-1 size-5 shrink-0 text-ink-muted transition-transform motion-safe:group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M8 4l6 6-6 6" />
-              </svg>
+              />
             </Link>
           </li>
         ))}
-      </ul>
+      </ol>
     </Section>
   )
 }
