@@ -8,7 +8,7 @@ function Envelope() {
       aria-labelledby="envelope-title"
       className="relative mx-auto w-full max-w-sm rounded-3xl bg-kraft p-5 pb-0 shadow-[0_24px_48px_-24px_rgb(59_42_20/0.45)]"
     >
-      <figcaption className="flex items-baseline justify-between px-1 text-kraft-ink">
+      <figcaption className="flex flex-wrap items-baseline justify-between gap-x-3 px-1 text-kraft-ink">
         <span id="envelope-title" className="font-display font-semibold">
           Your brown envelope
         </span>
@@ -20,14 +20,22 @@ function Envelope() {
         {requirements.map((item) => (
           <li
             key={item.id}
-            className="flex items-center gap-3 rounded-xl bg-slip px-4 py-2.5 shadow-sm"
+            className="flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-xl bg-slip px-4 py-2.5 shadow-sm"
           >
-            <span
+            {/* A small paper icon. Plain circles looked like checkboxes people could tap. */}
+            <svg
               aria-hidden="true"
-              className="size-4 shrink-0 rounded-full border-2 border-slip-muted"
-            />
-            <span className="flex-1 font-medium text-slip-ink">{item.name}</span>
-            <span className="text-sm text-slip-muted">{item.agency}</span>
+              viewBox="0 0 16 16"
+              className="size-4 shrink-0 text-slip-muted"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            >
+              <path d="M4 1.75h5.5L12.25 4.5v9.75H4z M9.25 1.75V4.75h3 M6 8h4.25 M6 10.75h4.25" />
+            </svg>
+            <span className="min-w-0 flex-1 font-medium text-slip-ink [overflow-wrap:anywhere]">{item.name}</span>
+            <span className="text-sm text-slip-muted [overflow-wrap:anywhere]">{item.agency}</span>
           </li>
         ))}
       </ul>

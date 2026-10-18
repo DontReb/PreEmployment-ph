@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useActiveSection from '../hooks/useActiveSection.js'
 
 const links = [
@@ -13,14 +13,30 @@ const sectionIds = links.map((link) => link.id)
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const activeId = useActiveSection(sectionIds)
+  const menuButtonRef = useRef(null)
+
+  // Escape closes the phone menu and puts keyboard focus back on the button
+  useEffect(() => {
+    if (!isOpen) return
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+        menuButtonRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
 
   return (
     <header className="sticky top-0 z-50 border-b border-separator bg-surface-raised/80 backdrop-blur-lg reduce-transparency:bg-surface-raised reduce-transparency:backdrop-blur-none">
       <nav
         aria-label="Main"
-        className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2"
+        className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2"
       >
-        <a href="#home" className="font-display text-lg font-bold tracking-tight text-ink">
+        <a href="#home" className="min-w-0 font-display text-lg font-bold tracking-tight text-ink [overflow-wrap:anywhere]">
           PreEmployment<span className="text-accent-ink">.ph</span>
         </a>
 
@@ -48,11 +64,12 @@ function Navbar() {
 
         {/* Mobile menu button: 44x44, only visible below md */}
         <button
+          ref={menuButtonRef}
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
-          className="grid size-11 place-items-center rounded-full text-ink hover:bg-accent-soft active:bg-accent-soft md:hidden"
+          className="grid size-11 shrink-0 place-items-center rounded-full text-ink hover:bg-accent-soft active:bg-accent-soft md:hidden"
         >
           <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
           <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
