@@ -1,21 +1,23 @@
+import { Route, Routes } from 'react-router'
 import Navbar from './components/Navbar.jsx'
-import Home from './components/Home.jsx'
-import Requirements from './components/Requirements.jsx'
-import Guides from './components/Guides.jsx'
-import FAQs from './components/FAQs.jsx'
-import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
+import ScrollManager from './components/ScrollManager.jsx'
+import HomePage from './pages/HomePage.jsx'
+import RequirementPage from './pages/RequirementPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
 
 function App() {
   return (
     <div className="flex min-h-screen flex-col bg-surface text-ink antialiased">
+      <ScrollManager />
       <Navbar />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4">
-        <Home />
-        <Requirements />
-        <Guides />
-        <FAQs />
-        <Contact />
+        {/* Only the route that matches the current URL is shown */}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/requirements/:id" element={<RequirementPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
       <Footer />
     </div>

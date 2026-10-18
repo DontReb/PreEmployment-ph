@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import Envelope from './Envelope.jsx'
 
 function Home() {
@@ -17,18 +18,18 @@ function Home() {
           accomplished worker began with a first step. This is yours. Padayon!
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <a
-            href="#requirements"
+          <Link
+            to="/#requirements"
             className="inline-flex min-h-11 max-w-full items-center rounded-full bg-accent px-6 py-2 text-center [overflow-wrap:anywhere] font-semibold text-on-accent shadow-sm transition hover:brightness-110 active:brightness-95"
           >
             See the requirements
-          </a>
-          <a
-            href="#guides"
+          </Link>
+          <Link
+            to="/#guides"
             className="inline-flex min-h-11 max-w-full items-center rounded-full px-6 py-2 text-center [overflow-wrap:anywhere] font-semibold text-accent-ink ring-1 ring-outline transition-colors hover:bg-accent-soft active:bg-accent-soft"
           >
             Read the guides
-          </a>
+          </Link>
         </div>
       </div>
 
