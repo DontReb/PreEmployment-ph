@@ -9,6 +9,8 @@
 //   bring       what to have with you
 //   steps       how to get it, in order
 //   tips        things that save time or trouble
+//   mode        'online', 'visit' (you go in person), or 'employer' (HR does it)
+//   forms       forms you'll fill out or print, and where to find the current version
 export const LAST_CHECKED = 'October 2026'
 
 const requirements = [
@@ -37,6 +39,8 @@ const requirements = [
       'Check every letter of your name and your birthday on the copy before you leave. Other offices copy these details from it.',
       'Some employers ask for an original copy, so consider getting more than one.',
     ],
+    mode: 'online',
+    forms: [],
   },
   {
     id: 'barangay',
@@ -59,6 +63,13 @@ const requirements = [
     tips: [
       'Get the first-time jobseeker certification only when you’re ready to apply for jobs. Its benefits last one year from the day it’s issued.',
       'Ask for photocopies of the certification. Each office you visit may keep one.',
+    ],
+    mode: 'visit',
+    forms: [
+      {
+        name: 'First-Time Jobseeker Certification and oath of undertaking',
+        where: 'Given and signed at your barangay hall. Each barangay uses its own copy.',
+      },
     ],
   },
   {
@@ -86,6 +97,8 @@ const requirements = [
       'Use only clearance.nbi.gov.ph. Look-alike sites charge extra or steal personal data.',
       'A “hit” means someone in the database has a similar name. It doesn’t mean you did anything wrong. You’ll be told when to come back.',
     ],
+    mode: 'visit',
+    forms: [],
   },
   {
     id: 'police',
@@ -112,6 +125,8 @@ const requirements = [
       'Use only pnpclearance.ph. Fake sites copy its look to steal personal data.',
       'Some employers accept either an NBI or a police clearance. Ask which one they need before getting both.',
     ],
+    mode: 'visit',
+    forms: [],
   },
   {
     id: 'sss',
@@ -132,6 +147,13 @@ const requirements = [
     tips: [
       'You only ever need one SS number. If you had one before (even from a part-time job), use that one.',
       'Give your employer the 10-digit SS number so they can pay your contributions.',
+    ],
+    mode: 'online',
+    forms: [
+      {
+        name: 'SSS Form E-1 (Personal Record)',
+        where: 'Shown after you apply for an SS number online. Print it if your employer asks.',
+      },
     ],
   },
   {
@@ -155,6 +177,13 @@ const requirements = [
     tips: [
       'The RTN is not your MID number. Give your employer the 12-digit MID, because that’s the number they pay contributions to.',
     ],
+    mode: 'online',
+    forms: [
+      {
+        name: 'Member’s Data Form (MDF)',
+        where: 'Print it from Virtual Pag-IBIG right after you register.',
+      },
+    ],
   },
   {
     id: 'philhealth',
@@ -177,6 +206,14 @@ const requirements = [
       'Wait for your PIN by email, usually within 3 to 5 working days.',
     ],
     tips: ['Submit only one application. Duplicate applications slow everything down.'],
+    mode: 'online',
+    forms: [
+      {
+        name: 'PhilHealth Member Registration Form (PMRF)',
+        where: 'Only needed if you register in person. On the PhilHealth website, open Downloads, then Forms.',
+        url: 'https://www.philhealth.gov.ph',
+      },
+    ],
   },
   {
     id: 'tin',
@@ -197,7 +234,22 @@ const requirements = [
       'Never get a second TIN. Having more than one is against the law.',
       'If an employer asks for a TIN before hiring you, ask if they can process it for you once you’re hired.',
     ],
+    mode: 'employer',
+    forms: [
+      {
+        name: 'BIR Form 1902',
+        where: 'Your employer usually gives it to you. The current version is on the BIR website under BIR Forms.',
+        url: 'https://www.bir.gov.ph',
+      },
+    ],
   },
 ]
 
 export default requirements
+
+// Labels for each `mode`, shared by the cards, filters, and requirement pages
+export const modeLabels = {
+  online: 'Online',
+  visit: 'In person',
+  employer: 'Through your employer',
+}

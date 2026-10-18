@@ -1,9 +1,23 @@
 import { Link } from 'react-router'
 import requirements from '../data/requirements.js'
+import useProgress from '../progress/useProgress.js'
+import ReadyCheckbox from './ui/ReadyCheckbox.jsx'
 
 // The signature element: the long brown envelope every Filipino applicant
 // carries to their first interview, with the documents tucked inside.
+// Each paper can be checked off, and progress is saved on this device.
 function Envelope() {
+  const { isDone, toggle, reset } = useProgress()
+  const total = requirements.length
+  const readyCount = requirements.filter((item) => isDone(item.id)).length
+
+  function handleClear() {
+    // Clearing can't be undone, so ask first
+    if (window.confirm(`Clear all ${readyCount} checkmarks? This can’t be undone.`)) {
+      reset()
+    }
+  }
+
   return (
     <figure
       aria-labelledby="envelope-title"
@@ -13,38 +27,66 @@ function Envelope() {
         <span id="envelope-title" className="font-display font-semibold">
           Your brown envelope
         </span>
-        <span className="text-sm">{requirements.length} documents</span>
+        <span className="text-sm">
+          {readyCount} of {total} ready
+        </span>
       </figcaption>
+
+      <div
+        role="progressbar"
+        aria-labelledby="envelope-title"
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-valuenow={readyCount}
+        aria-valuetext={`${readyCount} of ${total} documents ready`}
+        className="mx-1 mt-3 h-1.5 overflow-hidden rounded-full bg-kraft-deep"
+      >
+        <div
+          className="h-full rounded-full bg-kraft-ink motion-safe:transition-[width] motion-safe:duration-300"
+          style={{ width: `${(readyCount / total) * 100}%` }}
+        />
+      </div>
 
       {/* The papers inside */}
       <ul className="mt-4 space-y-2">
         {requirements.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} className="flex items-center rounded-xl bg-slip pr-4 shadow-sm">
+            <ReadyCheckbox
+              tone="kraft"
+              checked={isDone(item.id)}
+              onChange={() => toggle(item.id)}
+              label={`${item.name}, ready`}
+            />
             <Link
               to={`/requirements/${item.id}`}
-              className="flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-xl bg-slip px-4 py-2.5 shadow-sm transition motion-safe:hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:shadow-sm"
+              className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-0.5 py-2.5 hover:underline"
             >
-            {/* A small paper icon (decorative) */}
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 16 16"
-              className="size-4 shrink-0 text-slip-muted"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinejoin="round"
-            >
-              <path d="M4 1.75h5.5L12.25 4.5v9.75H4z M9.25 1.75V4.75h3 M6 8h4.25 M6 10.75h4.25" />
-            </svg>
-            <span className="min-w-0 flex-1 font-medium text-slip-ink [overflow-wrap:anywhere]">{item.name}</span>
-            <span className="text-sm text-slip-muted [overflow-wrap:anywhere]">{item.agency}</span>
+              <span className="min-w-0 flex-1 font-medium text-slip-ink [overflow-wrap:anywhere]">
+                {item.name}
+              </span>
+              <span className="text-sm text-slip-muted [overflow-wrap:anywhere]">
+                {item.agency}
+              </span>
             </Link>
           </li>
         ))}
       </ul>
 
-      {/* The front pocket of the envelope, tucked just under the last paper */}
-      <div className="relative -mx-5 -mt-1.5 h-12 rounded-b-3xl rounded-t-[2rem] bg-kraft-deep" />
+      {/* The front pocket of the envelope holds the envelope's actions */}
+      <div className="relative -mx-5 -mt-1.5 flex min-h-14 flex-wrap items-center justify-between gap-x-4 rounded-b-3xl rounded-t-[2rem] bg-kraft-deep px-6 pt-1.5 text-sm font-medium text-kraft-ink">
+        <Link to="/checklist" className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">
+          Print checklist
+        </Link>
+        {readyCount > 0 && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="inline-flex min-h-11 cursor-pointer items-center underline-offset-4 hover:underline"
+          >
+            Clear
+          </button>
+        )}
+      </div>
     </figure>
   )
 }

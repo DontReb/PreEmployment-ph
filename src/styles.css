@@ -67,6 +67,22 @@
   }
 }
 
+/* Paper is always light: use the light colors when printing, even in dark mode */
+@media print {
+  :root {
+    --color-surface: #ffffff;
+    --color-surface-raised: #ffffff;
+    --color-ink: #000000;
+    --color-ink-muted: #333333;
+    --color-separator: #cccccc;
+    --color-outline: #555555;
+    --color-accent: #43675a;
+    --color-on-accent: #ffffff;
+    --color-accent-ink: #43675a;
+    --color-accent-soft: #ffffff;
+  }
+}
+
 /* A custom variant, used like hover: -> reduce-transparency:bg-surface-raised */
 @custom-variant reduce-transparency (@media (prefers-reduced-transparency: reduce));
 

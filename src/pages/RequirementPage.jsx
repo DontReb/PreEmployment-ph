@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router'
-import requirements, { LAST_CHECKED } from '../data/requirements.js'
+import requirements, { LAST_CHECKED, modeLabels } from '../data/requirements.js'
+import useProgress from '../progress/useProgress.js'
 import Icon from '../components/ui/Icon.jsx'
 import CostBadge from '../components/ui/CostBadge.jsx'
+import ReadyCheckbox from '../components/ui/ReadyCheckbox.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 
 function RequirementPage() {
@@ -12,6 +14,7 @@ function RequirementPage() {
   const requirement = requirements[index]
   const next = requirements[index + 1]
   const headingRef = useRef(null)
+  const { isDone, toggle } = useProgress()
 
   // Move focus to the new page's heading, so screen reader and keyboard
   // users start reading here instead of being left on the old link
@@ -45,6 +48,22 @@ function RequirementPage() {
         {requirement.name}
       </h1>
       <p className="mt-6 text-lg leading-relaxed text-ink-muted">{requirement.summary}</p>
+      <p className="mt-2 text-sm font-medium text-ink-muted">How you get it: {modeLabels[requirement.mode]}</p>
+
+      {/* The same checkmark as the envelope on the home page */}
+      <label className="mt-6 flex cursor-pointer items-center gap-1 rounded-2xl bg-surface-raised py-1 pr-5 ring-1 ring-separator">
+        <ReadyCheckbox
+          checked={isDone(requirement.id)}
+          onChange={() => toggle(requirement.id)}
+          label="Ready"
+        />
+        <span>
+          <span className="block font-semibold text-ink">Ready</span>
+          <span className="block text-sm text-ink-muted">
+            Check this when the document is in your envelope.
+          </span>
+        </span>
+      </label>
 
       {/* Cost and how to get it for free */}
       <dl className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-2xl bg-separator ring-1 ring-separator sm:grid-cols-2">
@@ -68,13 +87,13 @@ function RequirementPage() {
               <li key={site.url}>
                 <a
                   href={site.url}
-                  className="inline-flex min-h-11 items-center gap-2 font-medium text-accent-ink underline decoration-outline underline-offset-4 hover:decoration-2"
+                  className="inline-flex min-h-11 max-w-full items-center gap-2 font-medium text-accent-ink underline decoration-outline underline-offset-4 hover:decoration-2"
                 >
-                  {site.label}
+                  <span className="min-w-0 [overflow-wrap:anywhere]">{site.label}</span>
                   <Icon name="external" className="size-4 shrink-0" />
                   <span className="sr-only">(official website)</span>
                 </a>
-                <p className="text-sm text-ink-muted">{new URL(site.url).hostname}</p>
+                <p className="text-sm text-ink-muted [overflow-wrap:anywhere]">{new URL(site.url).hostname}</p>
               </li>
             ))}
           </ul>
@@ -109,6 +128,30 @@ function RequirementPage() {
           ))}
         </ol>
       </section>
+
+      {requirement.forms.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-bold tracking-tight text-ink">Forms</h2>
+          <ul className="mt-3 space-y-4">
+            {requirement.forms.map((form) => (
+              <li key={form.name}>
+                <p className="font-medium text-ink">{form.name}</p>
+                <p className="mt-0.5 text-ink-muted">{form.where}</p>
+                {form.url && (
+                  <a
+                    href={form.url}
+                    className="mt-1 inline-flex min-h-11 max-w-full items-center gap-2 font-medium text-accent-ink underline decoration-outline underline-offset-4 hover:decoration-2"
+                  >
+                    <span className="min-w-0 [overflow-wrap:anywhere]">{new URL(form.url).hostname}</span>
+                    <Icon name="external" className="size-4 shrink-0" />
+                    <span className="sr-only">(official website)</span>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {requirement.tips.length > 0 && (
         <section className="mt-10 rounded-2xl bg-surface-raised p-6 ring-1 ring-separator">
