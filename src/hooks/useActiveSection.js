@@ -1,14 +1,36 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router'
 
 // Returns the id of the section currently being read, so the navbar
 // can show people where they are on the page.
 function useActiveSection(ids) {
+  const { pathname, hash, key } = useLocation()
   const [activeId, setActiveId] = useState(ids[0])
 
-  useEffect(() => {
-    let followingLink = false
-    let idleTimer
+  // useRef keeps a value between renders WITHOUT causing a re-render when it changes
+  const followingLink = useRef(false)
+  const idleTimer = useRef(null)
 
+  // Stop trusting the clicked link once scrolling has been quiet for a moment
+  function finishFollowingLinkSoon(delay) {
+    clearTimeout(idleTimer.current)
+    idleTimer.current = setTimeout(() => {
+      followingLink.current = false
+    }, delay)
+  }
+
+  // When someone clicks a nav link (e.g. /#faqs), trust the link they chose instead
+  // of guessing from the scroll position (short sections may never reach the top).
+  useEffect(() => {
+    const id = hash.slice(1)
+    if (ids.includes(id)) {
+      setActiveId(id)
+      followingLink.current = true
+      finishFollowingLinkSoon(300)
+    }
+  }, [ids, hash, key])
+
+  useEffect(() => {
     function updateFromScroll() {
       const atBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
@@ -28,41 +50,27 @@ function useActiveSection(ids) {
       setActiveId(current)
     }
 
-    // When someone clicks a nav link, trust the link they chose instead of
-    // guessing from the scroll position (short sections may never reach the top).
-    function handleHashChange() {
-      const id = window.location.hash.slice(1)
-      if (ids.includes(id)) {
-        setActiveId(id)
-        followingLink = true
-      }
-    }
-
     function handleScroll() {
-      if (followingLink) {
-        // Wait until the jump to the clicked section has finished
-        clearTimeout(idleTimer)
-        idleTimer = setTimeout(() => {
-          followingLink = false
-        }, 150)
+      if (followingLink.current) {
+        finishFollowingLinkSoon(150)
         return
       }
       updateFromScroll()
     }
 
-    updateFromScroll()
+    if (!followingLink.current) updateFromScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', updateFromScroll)
-    window.addEventListener('hashchange', handleHashChange)
 
     // Cleanup: stop listening when the component goes away
     return () => {
-      clearTimeout(idleTimer)
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', updateFromScroll)
-      window.removeEventListener('hashchange', handleHashChange)
     }
-  }, [ids])
+  }, [ids, pathname])
+
+  // Clear any pending timer when the component goes away
+  useEffect(() => () => clearTimeout(idleTimer.current), [])
 
   return activeId
 }

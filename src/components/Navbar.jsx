@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router'
 import useActiveSection from '../hooks/useActiveSection.js'
 
 const links = [
@@ -12,7 +13,14 @@ const sectionIds = links.map((link) => link.id)
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const activeId = useActiveSection(sectionIds)
+  const { pathname } = useLocation()
+  const sectionOnHomePage = useActiveSection(sectionIds)
+
+  // On the home page, highlight the section being read.
+  // On a requirement's own page, highlight "Requirements".
+  let activeId = null
+  if (pathname === '/') activeId = sectionOnHomePage
+  else if (pathname.startsWith('/requirements/')) activeId = 'requirements'
   const menuButtonRef = useRef(null)
 
   // Escape closes the phone menu and puts keyboard focus back on the button
@@ -36,9 +44,9 @@ function Navbar() {
         aria-label="Main"
         className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2"
       >
-        <a href="#home" className="min-w-0 font-display text-lg font-bold tracking-tight text-ink [overflow-wrap:anywhere]">
+        <Link to="/" className="min-w-0 font-display text-lg font-bold tracking-tight text-ink [overflow-wrap:anywhere]">
           PreEmployment<span className="text-accent-ink">.ph</span>
-        </a>
+        </Link>
 
         {/* Desktop links: hidden on small screens, shown from md (768px) up */}
         <ul className="hidden gap-1 md:flex">
@@ -46,8 +54,8 @@ function Navbar() {
             const isActive = link.id === activeId
             return (
               <li key={link.id}>
-                <a
-                  href={`#${link.id}`}
+                <Link
+                  to={`/#${link.id}`}
                   aria-current={isActive ? 'location' : undefined}
                   className={`block rounded-full px-4 py-2 text-sm font-medium transition-colors active:bg-accent-soft ${
                     isActive
@@ -56,7 +64,7 @@ function Navbar() {
                   }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             )
           })}
@@ -84,8 +92,8 @@ function Navbar() {
             const isActive = link.id === activeId
             return (
               <li key={link.id}>
-                <a
-                  href={`#${link.id}`}
+                <Link
+                  to={`/#${link.id}`}
                   onClick={() => setIsOpen(false)}
                   aria-current={isActive ? 'location' : undefined}
                   className={`block rounded-xl px-3 py-3 font-medium active:bg-accent-soft ${
@@ -93,7 +101,7 @@ function Navbar() {
                   }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             )
           })}

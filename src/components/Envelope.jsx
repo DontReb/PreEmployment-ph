@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import requirements from '../data/requirements.js'
 
 // The signature element: the long brown envelope every Filipino applicant
@@ -18,11 +19,12 @@ function Envelope() {
       {/* The papers inside */}
       <ul className="mt-4 space-y-2">
         {requirements.map((item) => (
-          <li
-            key={item.id}
-            className="flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-xl bg-slip px-4 py-2.5 shadow-sm"
-          >
-            {/* A small paper icon. Plain circles looked like checkboxes people could tap. */}
+          <li key={item.id}>
+            <Link
+              to={`/requirements/${item.id}`}
+              className="flex flex-wrap items-center gap-x-3 gap-y-0.5 rounded-xl bg-slip px-4 py-2.5 shadow-sm transition motion-safe:hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:shadow-sm"
+            >
+            {/* A small paper icon (decorative) */}
             <svg
               aria-hidden="true"
               viewBox="0 0 16 16"
@@ -36,6 +38,7 @@ function Envelope() {
             </svg>
             <span className="min-w-0 flex-1 font-medium text-slip-ink [overflow-wrap:anywhere]">{item.name}</span>
             <span className="text-sm text-slip-muted [overflow-wrap:anywhere]">{item.agency}</span>
+            </Link>
           </li>
         ))}
       </ul>
