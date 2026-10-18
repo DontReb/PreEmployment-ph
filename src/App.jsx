@@ -8,7 +8,7 @@ import Footer from './components/Footer.jsx'
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-brand-50 text-ink antialiased">
+    <div className="flex min-h-screen flex-col bg-surface text-ink antialiased">
       <Navbar />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4">
         <Home />

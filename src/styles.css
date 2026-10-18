@@ -1,29 +1,90 @@
 @import "tailwindcss";
 
 /*
-  Design tokens. Every value here becomes a Tailwind class automatically:
-  --color-brand-600 -> bg-brand-600, text-brand-600, border-brand-600 ...
-  --font-sans       -> font-sans (and the default font for the whole page)
-  Change a color here and it updates everywhere it's used.
+  Semantic design tokens. Components use names that describe a ROLE
+  (surface, ink, accent) instead of a raw color. Each token becomes a
+  Tailwind class: --color-surface -> bg-surface, text-surface, border-surface.
+
+  Light values live here. The @media blocks below swap in dark and
+  increased-contrast values, so components never need to know which
+  appearance is active.
 */
 @theme {
-  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+  /* Body text uses the device's own system font (most legible at small sizes).
+     Sora is saved for headings, where it carries the brand. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
 
-  /* Sage green, built around the original #92b4a7 (brand-400) */
-  --color-brand-50: #f3f8f6;
-  --color-brand-100: #e2eee9;
-  --color-brand-200: #c6ddd4;
-  --color-brand-300: #a8cabc;
-  --color-brand-400: #92b4a7;
-  --color-brand-500: #6a9a88;
-  --color-brand-600: #527f6e;
-  --color-brand-700: #43675a;
-  --color-brand-800: #39544b;
-  --color-brand-900: #30463f;
+  --color-surface: #f3f8f6;         /* page background */
+  --color-surface-raised: #ffffff;  /* bars, cards */
+  --color-ink: #1f2a27;             /* primary text, 13.8:1 on surface */
+  --color-ink-muted: #4b5a55;       /* secondary text, 6.8:1 on surface */
+  --color-separator: #dbe6e1;       /* hairlines (decorative) */
+  --color-outline: #6f8f82;         /* control borders, 3.3:1 on surface */
 
-  /* Text colors */
-  --color-ink: #1f2a27;
-  --color-ink-muted: #4b5a55;
+  --color-accent: #43675a;          /* primary action background */
+  --color-on-accent: #ffffff;       /* text on accent, 6.3:1 */
+  --color-accent-ink: #43675a;      /* accent-colored text, 5.9:1 on surface */
+  --color-accent-soft: #e2eee9;     /* selected / hover fill */
+
+  /* The long brown envelope: used ONLY by the signature element */
+  --color-kraft: #d9b98a;
+  --color-kraft-deep: #c9a571;
+  --color-kraft-ink: #3b2a14;       /* 7.4:1 on kraft */
+  --color-slip: #fffdf7;            /* paper inside the envelope */
+  --color-slip-ink: #1f2a27;
+  --color-slip-muted: #4b5a55;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: #0e1412;
+    --color-surface-raised: #172019;
+    --color-ink: #e7eeeb;           /* 15.8:1 */
+    --color-ink-muted: #a7b6b0;     /* 8.8:1 */
+    --color-separator: #26302c;
+    --color-outline: #5d7a6f;       /* 4.0:1 */
+
+    --color-accent: #8cc4ad;
+    --color-on-accent: #0e1412;     /* 9.4:1 */
+    --color-accent-ink: #8cc4ad;    /* 9.4:1 */
+    --color-accent-soft: #1f2b27;
+
+    --color-kraft: #b8955f;
+    --color-kraft-deep: #a58552;
+    --color-kraft-ink: #2a1d0c;     /* 5.9:1 */
+    --color-slip: #d9d3c5;          /* softened so paper doesn't glow in the dark */
+    --color-slip-ink: #1f2a27;      /* 9.9:1 */
+    --color-slip-muted: #4b5a55;    /* 4.9:1 */
+  }
+}
+
+/* Increase Contrast / high-contrast mode: secondary text becomes primary */
+@media (prefers-contrast: more) {
+  :root {
+    --color-ink-muted: var(--color-ink);
+    --color-separator: var(--color-outline);
+  }
+}
+
+/* A custom variant, used like hover: -> reduce-transparency:bg-surface-raised */
+@custom-variant reduce-transparency (@media (prefers-reduced-transparency: reduce));
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+
+  /* One clear keyboard focus ring for every link and button */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

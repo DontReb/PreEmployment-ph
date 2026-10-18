@@ -1,68 +1,85 @@
 import { useState } from 'react'
+import useActiveSection from '../hooks/useActiveSection.js'
 
 const links = [
-  { href: '#home', label: 'Home' },
-  { href: '#requirements', label: 'Requirements' },
-  { href: '#guides', label: 'Guides' },
-  { href: '#faqs', label: 'FAQs' },
-  { href: '#contact', label: 'Contact' },
+  { id: 'home', label: 'Home' },
+  { id: 'requirements', label: 'Requirements' },
+  { id: 'guides', label: 'Guides' },
+  { id: 'faqs', label: 'FAQs' },
+  { id: 'contact', label: 'Contact' },
 ]
+const sectionIds = links.map((link) => link.id)
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const activeId = useActiveSection(sectionIds)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-100 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-separator bg-surface-raised/80 backdrop-blur-lg reduce-transparency:bg-surface-raised reduce-transparency:backdrop-blur-none">
       <nav
         aria-label="Main"
-        className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3"
+        className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2"
       >
-        <a href="#home" className="text-lg font-bold tracking-tight text-ink">
-          PreEmployment<span className="text-brand-600">.ph</span>
+        <a href="#home" className="font-display text-lg font-bold tracking-tight text-ink">
+          PreEmployment<span className="text-accent-ink">.ph</span>
         </a>
 
         {/* Desktop links: hidden on small screens, shown from md (768px) up */}
         <ul className="hidden gap-1 md:flex">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="rounded-full px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:bg-brand-50 hover:text-brand-700"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {links.map((link) => {
+            const isActive = link.id === activeId
+            return (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  aria-current={isActive ? 'location' : undefined}
+                  className={`block rounded-full px-4 py-2 text-sm font-medium transition-colors active:bg-accent-soft ${
+                    isActive
+                      ? 'bg-accent-soft text-accent-ink'
+                      : 'text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            )
+          })}
         </ul>
 
-        {/* Mobile menu button: only visible below md */}
+        {/* Mobile menu button: 44x44, only visible below md */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
-          className="rounded-lg p-2 text-ink hover:bg-brand-50 md:hidden"
+          className="grid size-11 place-items-center rounded-full text-ink hover:bg-accent-soft active:bg-accent-soft md:hidden"
         >
           <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
           <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {isOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+            {isOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
           </svg>
         </button>
       </nav>
 
       {isOpen && (
-        <ul id="mobile-menu" className="border-t border-brand-100 px-4 py-2 md:hidden">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block rounded-lg px-3 py-3 font-medium text-ink hover:bg-brand-50"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+        <ul id="mobile-menu" className="border-t border-separator px-4 py-2 md:hidden">
+          {links.map((link) => {
+            const isActive = link.id === activeId
+            return (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={() => setIsOpen(false)}
+                  aria-current={isActive ? 'location' : undefined}
+                  className={`block rounded-xl px-3 py-3 font-medium active:bg-accent-soft ${
+                    isActive ? 'bg-accent-soft text-accent-ink' : 'text-ink'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            )
+          })}
         </ul>
       )}
     </header>
