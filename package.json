@@ -29,5 +29,8 @@
     "globals": "^16.3.0",
     "tailwindcss": "^4.3.3",
     "vite": "^7.1.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }
