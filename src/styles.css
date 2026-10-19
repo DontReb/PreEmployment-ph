@@ -35,6 +35,37 @@
   --color-slip: #fffdf7;            /* paper inside the envelope */
   --color-slip-ink: #1f2a27;
   --color-slip-muted: #4b5a55;
+
+  /* Rubber-stamp ink, used ONLY for "Ready" and "Kumpleto" stamps */
+  --color-stamp: #2a4a9c;           /* on page backgrounds, 7.7:1 */
+  --color-stamp-paper: #2a4a9c;     /* on paper slips (light in both modes), 5.5:1+ */
+  --color-stamp-kraft: #2a4a9c;     /* large stamp on the envelope, 4.4:1 */
+
+  /* The two motions: papers slide into the envelope once, stamps land on tick */
+  --animate-paper-in: paper-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-stamp: stamp-in 260ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+
+  @keyframes paper-in {
+    from {
+      opacity: 0;
+      transform: translateY(-14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes stamp-in {
+    from {
+      opacity: 0;
+      scale: 1.7;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,7 +74,7 @@
     --color-surface-raised: #172019;
     --color-ink: #e7eeeb;           /* 15.8:1 */
     --color-ink-muted: #a7b6b0;     /* 8.8:1 */
-    --color-separator: #26302c;
+    --color-separator: #2f3b36;     /* visible on dark surfaces too */
     --color-outline: #5d7a6f;       /* 4.0:1 */
 
     --color-accent: #8cc4ad;
@@ -57,6 +88,9 @@
     --color-slip: #d9d3c5;          /* softened so paper doesn't glow in the dark */
     --color-slip-ink: #1f2a27;      /* 9.9:1 */
     --color-slip-muted: #4b5a55;    /* 4.9:1 */
+
+    --color-stamp: #a9bcff;         /* 9.0:1+ */
+    --color-stamp-kraft: #1f3a85;   /* 3.0:1, large bold text only */
   }
 }
 
@@ -81,6 +115,7 @@
     --color-on-accent: #ffffff;
     --color-accent-ink: #43675a;
     --color-accent-soft: #ffffff;
+    --color-stamp: #2a4a9c;
   }
 }
 
@@ -90,6 +125,8 @@
 @layer base {
   :root {
     color-scheme: light dark;
+    /* Keep anything scrolled into view (like keyboard focus) below the sticky navbar */
+    scroll-padding-top: 5rem;
   }
 
   /* Long words (like "Requirements" at very large text sizes) wrap
@@ -108,6 +145,24 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
+}
+
+/* A rubber stamp: heavy uppercase type in a double inked border, slightly tilted.
+   Real stamps are uppercase, so this is the one place the site uses capitals. */
+@utility stamp {
+  display: inline-block;
+  padding: 0.05em 0.45em;
+  border: 2px solid currentColor;
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  rotate: -7deg;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: no-preference) {

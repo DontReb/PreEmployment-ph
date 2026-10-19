@@ -9,10 +9,9 @@ function Guides() {
   return (
     <Section id="guides" title="Guides">
       {/* Guide 1: the free documents law */}
-      <div className="rounded-3xl bg-surface-raised p-6 ring-1 ring-separator sm:p-8">
-        <p className="font-semibold text-accent-ink">Republic Act No. 11261</p>
-        <h3 className="mt-1 text-xl font-bold tracking-tight text-ink sm:text-2xl">
-          Get most documents for free
+      <div className="rounded-lg bg-surface-raised p-6 ring-1 ring-separator sm:p-8">
+        <h3 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+          Get most documents free with RA 11261
         </h3>
         <p className="mt-3 max-w-2xl">
           The First Time Jobseekers Assistance Act removes government fees for first-time job

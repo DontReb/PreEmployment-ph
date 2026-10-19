@@ -132,6 +132,14 @@ Never put the **secret** key (`sb_secret_...`) in the site or in git. The site o
 
 ---
 
+## 📊 Traffic Dashboard
+
+The site uses **Vercel Web Analytics**: anonymous and cookie-free. To see your traffic, open your project on Vercel and click the **Analytics** tab (click **Enable** the first time). It shows visitors, page views, top pages, where visitors came from, countries, and devices. Visits are only counted on the live site, never during `npm run dev`.
+
+Sign-ups are in Supabase under **Authentication → Users**.
+
+---
+
 ## 🌐 Deploying
 
 The site is static, so free hosting works well.

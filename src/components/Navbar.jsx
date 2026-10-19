@@ -91,7 +91,7 @@ function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
-          className="grid size-11 shrink-0 place-items-center rounded-full text-ink hover:bg-accent-soft active:bg-accent-soft md:hidden"
+          className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-ink hover:bg-accent-soft active:bg-accent-soft md:hidden"
         >
           <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
           <svg aria-hidden="true" viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

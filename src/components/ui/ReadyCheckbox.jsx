@@ -1,10 +1,12 @@
 // A real <input type="checkbox"> (so keyboards and screen readers work out of
-// the box), restyled with Tailwind. `peer` lets the check icon react to it.
+// the box), restyled with Tailwind. The invisible input covers the whole
+// 44x44 area, so the full square is tappable, not just the small box drawn in it.
+// `peer` lets the drawn box and check icon react to the input's state.
 function ReadyCheckbox({ checked, onChange, label, tone = 'accent' }) {
-  const colors =
+  const box =
     tone === 'kraft'
-      ? 'border-slip-muted checked:border-kraft-ink checked:bg-kraft-ink'
-      : 'border-outline checked:border-accent checked:bg-accent'
+      ? 'border-slip-muted peer-checked:border-kraft-ink peer-checked:bg-kraft-ink'
+      : 'border-outline peer-checked:border-accent peer-checked:bg-accent'
   const checkColor = tone === 'kraft' ? 'text-slip' : 'text-on-accent'
 
   return (
@@ -14,7 +16,11 @@ function ReadyCheckbox({ checked, onChange, label, tone = 'accent' }) {
         checked={checked}
         onChange={onChange}
         aria-label={label}
-        className={`peer size-5 cursor-pointer appearance-none rounded-md border-2 bg-transparent transition-colors ${colors}`}
+        className="peer absolute inset-0 size-full cursor-pointer appearance-none rounded-lg focus-visible:outline-offset-[-4px]"
+      />
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none size-5 rounded-md border-2 bg-transparent transition-colors ${box}`}
       />
       <svg
         aria-hidden="true"
