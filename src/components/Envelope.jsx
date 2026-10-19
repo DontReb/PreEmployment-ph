@@ -51,7 +51,8 @@ function Envelope() {
           <span id="envelope-title" className="font-display font-semibold">
             Your brown envelope
           </span>
-          <span className="text-sm">
+          {/* Screen readers hear the new count after each tick, without moving focus */}
+          <span aria-live="polite" aria-atomic="true" className="text-sm">
             {readyCount} of {total} ready
           </span>
         </figcaption>
@@ -100,7 +101,7 @@ function Envelope() {
                     // aria-hidden: the checkbox already tells screen readers it's ready
                     <span
                       aria-hidden="true"
-                      className={`stamp text-[0.7rem] text-stamp-paper ${
+                      className={`stamp text-xs text-stamp-paper ${
                         justStamped.has(item.id) ? 'motion-safe:animate-stamp' : ''
                       }`}
                     >

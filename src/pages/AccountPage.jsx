@@ -84,6 +84,8 @@ function SignInForm() {
         </label>
         <input
           id="email"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? 'email-error' : 'email-hint'}
           type="email"
           required
           autoComplete="email"
@@ -94,14 +96,14 @@ function SignInForm() {
           className={inputClass}
         />
         {error && (
-          <p role="alert" className="mt-3 text-ink">
+          <p id="email-error" role="alert" className="mt-3 text-ink">
             {error}
           </p>
         )}
         <button type="submit" disabled={busy} className={`${primaryButton} mt-5`}>
           {busy ? 'Sending…' : 'Send code'}
         </button>
-        <p className="mt-4 text-sm">
+        <p id="email-hint" className="mt-4 text-sm">
           No password needed. Each time you sign in, a 6-digit code is sent to your email.
         </p>
       </form>
@@ -119,6 +121,8 @@ function SignInForm() {
       </label>
       <input
         id="code"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? 'code-error' : undefined}
         ref={codeInput}
         type="text"
         required
@@ -132,7 +136,7 @@ function SignInForm() {
         className={`${inputClass} font-mono text-lg tracking-[0.3em]`}
       />
       {error && (
-        <p role="alert" className="mt-3 text-ink">
+        <p id="code-error" role="alert" className="mt-3 text-ink">
           {error}
         </p>
       )}

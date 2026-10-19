@@ -1,10 +1,12 @@
 import { Link } from 'react-router'
+import useFocusOnOpen from '../hooks/useFocusOnOpen.js'
 
 function NotFoundPage() {
+  const headingRef = useFocusOnOpen()
   return (
     <section className="py-20 text-center">
       <title>Page not found · PreEmployment.ph</title>
-      <h1 className="text-3xl font-bold tracking-tight text-ink">Page not found</h1>
+      <h1 ref={headingRef} tabIndex={-1} className="text-3xl font-bold tracking-tight text-ink focus:outline-none">Page not found</h1>
       <p className="mt-4 text-ink-muted">This link may be old or mistyped.</p>
       <Link
         to="/"

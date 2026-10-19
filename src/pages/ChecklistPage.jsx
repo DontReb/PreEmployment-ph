@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import useFocusOnOpen from '../hooks/useFocusOnOpen.js'
 import requirements, { LAST_CHECKED, modeLabels } from '../data/requirements.js'
 import useProgress from '../progress/useProgress.js'
 import Icon from '../components/ui/Icon.jsx'
@@ -7,6 +8,7 @@ import Icon from '../components/ui/Icon.jsx'
 // Classes starting with print: only apply on paper; print:hidden hides
 // things like buttons that make no sense on paper.
 function ChecklistPage() {
+  const headingRef = useFocusOnOpen()
   const { isDone } = useProgress()
   const readyCount = requirements.filter((item) => isDone(item.id)).length
 
@@ -31,7 +33,11 @@ function ChecklistPage() {
         </button>
       </div>
 
-      <h1 className="mt-8 text-4xl font-bold tracking-tight text-ink print:mt-0 print:text-2xl">
+      <h1
+        ref={headingRef}
+        tabIndex={-1}
+        className="mt-8 text-4xl font-bold tracking-tight text-ink focus:outline-none print:mt-0 print:text-2xl"
+      >
         Pre-employment checklist
       </h1>
       <p className="mt-3 text-ink-muted">

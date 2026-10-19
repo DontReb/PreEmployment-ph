@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import Section from './Section.jsx'
 import Icon from './ui/Icon.jsx'
 import ModeTag from './ui/ModeTag.jsx'
@@ -26,9 +26,38 @@ function normalize(text) {
 }
 
 function Requirements() {
-  const [query, setQuery] = useState('')
-  const [filterId, setFilterId] = useState('all')
+  // Search and filter live in the web address (?q=nbi&show=online), so pressing
+  // Back from a document returns to the same list, and the list can be shared
+  const [params, setParams] = useSearchParams()
+  // Local state updates instantly as people type; the address follows along.
+  // (Reading the input straight from the address could drop fast keystrokes,
+  // because the router applies address changes a moment later.)
+  const [query, setQueryState] = useState(() => params.get('q') ?? '')
+  const [filterId, setFilterState] = useState(() =>
+    filters.some((filter) => filter.id === params.get('show')) ? params.get('show') : 'all',
+  )
   const { isDone } = useProgress()
+
+  function updateParams(changes) {
+    const next = new URLSearchParams(params)
+    for (const [name, value] of Object.entries(changes)) {
+      if (value && value !== 'all') next.set(name, value)
+      else next.delete(name)
+    }
+    // replace: typing shouldn't add a Back step per letter
+    // keepScroll: tells ScrollManager not to jump while filtering
+    setParams(next, { replace: true, preventScrollReset: true, state: { keepScroll: true } })
+  }
+
+  function setQuery(value) {
+    setQueryState(value)
+    updateParams({ q: value })
+  }
+
+  function setFilterId(value) {
+    setFilterState(value)
+    updateParams({ show: value })
+  }
 
   // Derived values: calculated from state on every render, never stored separately
   const activeFilter = filters.find((filter) => filter.id === filterId)
@@ -45,8 +74,9 @@ function Requirements() {
   })
 
   function clearAll() {
-    setQuery('')
-    setFilterId('all')
+    setQueryState('')
+    setFilterState('all')
+    updateParams({ q: '', show: 'all' })
   }
 
   return (

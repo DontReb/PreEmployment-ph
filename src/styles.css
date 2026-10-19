@@ -74,7 +74,7 @@
     --color-surface-raised: #172019;
     --color-ink: #e7eeeb;           /* 15.8:1 */
     --color-ink-muted: #a7b6b0;     /* 8.8:1 */
-    --color-separator: #26302c;
+    --color-separator: #2f3b36;     /* visible on dark surfaces too */
     --color-outline: #5d7a6f;       /* 4.0:1 */
 
     --color-accent: #8cc4ad;
@@ -125,6 +125,8 @@
 @layer base {
   :root {
     color-scheme: light dark;
+    /* Keep anything scrolled into view (like keyboard focus) below the sticky navbar */
+    scroll-padding-top: 5rem;
   }
 
   /* Long words (like "Requirements" at very large text sizes) wrap
