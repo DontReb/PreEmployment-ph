@@ -39,7 +39,7 @@ function ChecklistPage() {
         each official website before you go.
       </p>
 
-      <p className="mt-4 rounded-2xl bg-accent-soft p-4 text-ink print:bg-transparent print:p-0">
+      <p className="mt-4 rounded-lg bg-accent-soft p-4 text-ink print:bg-transparent print:p-0">
         <span className="font-semibold">First job?</span> Get a First-Time Jobseeker Certification
         from your barangay first. Under RA 11261 it makes most of these documents free, once, within
         one year.
@@ -61,17 +61,15 @@ function ChecklistPage() {
               </span>
 
               <div className="min-w-0 flex-1">
-                <h2 className="font-semibold text-ink">
-                  {item.name}
-                  <span className="font-normal text-ink-muted"> · {item.agencyName}</span>
-                </h2>
+                <h2 className="font-semibold text-ink">{item.name}</h2>
+                <p className="text-sm text-ink-muted">Issued by {item.agencyName}</p>
                 <dl className="mt-1 grid grid-cols-1 gap-x-6 gap-y-1 text-sm text-ink-muted sm:grid-cols-[4.5rem_1fr] print:grid-cols-[4.5rem_1fr]">
                   <dt className="font-medium text-ink">Cost</dt>
                   <dd>{item.cost ?? 'Free'}</dd>
                   <dt className="font-medium text-ink">How</dt>
                   <dd>
                     {modeLabels[item.mode]}
-                    {item.apply[0] && ` · ${new URL(item.apply[0].url).hostname}`}
+                    {item.apply[0] && `, at ${new URL(item.apply[0].url).hostname}`}
                   </dd>
                   <dt className="font-medium text-ink">Bring</dt>
                   <dd>{item.bring.join('; ')}</dd>
@@ -89,7 +87,7 @@ function ChecklistPage() {
       </ol>
 
       <p className="mt-6 hidden text-sm text-ink-muted print:block">
-        From PreEmployment.ph · {window.location.origin}
+        Printed from {window.location.origin}
       </p>
     </article>
   )

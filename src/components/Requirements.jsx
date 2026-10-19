@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import Section from './Section.jsx'
 import Icon from './ui/Icon.jsx'
+import ModeTag from './ui/ModeTag.jsx'
 import CostBadge from './ui/CostBadge.jsx'
-import requirements, { modeLabels } from '../data/requirements.js'
+import requirements from '../data/requirements.js'
 import useProgress from '../progress/useProgress.js'
 
 // Each filter is a name plus a test that decides if a requirement matches
@@ -120,40 +121,45 @@ function Requirements() {
       </div>
 
       {results.length > 0 ? (
-        <ol className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {results.map((item) => (
-            <li key={item.id}>
-              <Link
-                to={`/requirements/${item.id}`}
-                className="group flex h-full items-start gap-4 rounded-2xl bg-surface-raised p-5 ring-1 ring-separator transition hover:ring-outline active:bg-accent-soft"
-              >
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-ink">{item.name}</h3>
-                  <p className="mt-0.5 text-sm text-ink-muted">
-                    {item.agencyName} · {modeLabels[item.mode]}
-                  </p>
-                  <p className="mt-3 text-ink-muted">{item.summary}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <CostBadge requirement={item} />
-                    {isDone(item.id) && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-0.5 text-sm font-medium text-on-accent">
-                        <Icon name="check" className="size-3.5" />
-                        Ready
-                      </span>
-                    )}
+        // A queue: the number is each document's place in the recommended order,
+        // like the numbered tickets at a government office
+        <ol className="mt-4 divide-y divide-separator overflow-hidden rounded-lg bg-surface-raised ring-1 ring-separator">
+          {results.map((item) => {
+            const queueNumber = requirements.indexOf(item) + 1
+            const ready = isDone(item.id)
+            return (
+              <li key={item.id}>
+                <Link
+                  to={`/requirements/${item.id}`}
+                  className="grid grid-cols-[3rem_minmax(0,1fr)] gap-x-4 gap-y-3 p-4 transition-colors hover:bg-accent-soft/60 active:bg-accent-soft sm:grid-cols-[4rem_minmax(0,1fr)_auto] sm:p-5"
+                >
+                  <span className="flex flex-col items-center border-r border-dashed border-outline/60 pr-3 text-ink-muted">
+                    <span className="text-xs">No.</span>
+                    <span className="font-display text-2xl font-bold tabular-nums text-ink sm:text-3xl">
+                      <span className="sr-only">Step </span>
+                      {queueNumber}
+                    </span>
+                  </span>
+
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-ink">{item.name}</h3>
+                    <p className="mt-0.5 text-sm text-ink-muted">{item.agencyName}</p>
+                    <p className="mt-2 max-w-prose text-ink-muted">{item.summary}</p>
                   </div>
-                </div>
-                <Icon
-                  name="chevronRight"
-                  className="mt-1 size-5 shrink-0 text-ink-muted transition-transform motion-safe:group-hover:translate-x-0.5"
-                />
-              </Link>
-            </li>
-          ))}
+
+                  <div className="col-start-2 flex flex-wrap items-center gap-x-4 gap-y-2 sm:col-start-3 sm:flex-col sm:items-end sm:justify-center">
+                    <ModeTag mode={item.mode} />
+                    <CostBadge requirement={item} />
+                    {ready && <span className="stamp text-xs text-stamp">Ready</span>}
+                  </div>
+                </Link>
+              </li>
+            )
+          })}
         </ol>
       ) : (
         // Empty state: say what happened and offer the next action
-        <div className="mt-4 rounded-2xl bg-surface-raised p-8 text-center ring-1 ring-separator">
+        <div className="mt-4 rounded-lg bg-surface-raised p-8 text-center ring-1 ring-separator">
           <p className="font-semibold text-ink">No documents match</p>
           <p className="mt-1">Try a different word or filter.</p>
           <button

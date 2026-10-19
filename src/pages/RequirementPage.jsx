@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router'
-import requirements, { LAST_CHECKED, modeLabels } from '../data/requirements.js'
+import requirements, { LAST_CHECKED } from '../data/requirements.js'
 import useProgress from '../progress/useProgress.js'
 import Icon from '../components/ui/Icon.jsx'
 import CostBadge from '../components/ui/CostBadge.jsx'
 import ReadyCheckbox from '../components/ui/ReadyCheckbox.jsx'
+import ModeTag from '../components/ui/ModeTag.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 
 function RequirementPage() {
@@ -15,6 +16,8 @@ function RequirementPage() {
   const next = requirements[index + 1]
   const headingRef = useRef(null)
   const { isDone, toggle } = useProgress()
+  // The stamp only animates when the person ticks it, not when the page opens
+  const [justStamped, setJustStamped] = useState(null)
 
   // Move focus to the new page's heading, so screen reader and keyboard
   // users start reading here instead of being left on the old link
@@ -39,34 +42,49 @@ function RequirementPage() {
         All requirements
       </Link>
 
-      <p className="mt-8 font-semibold text-accent-ink">{requirement.agencyName}</p>
       <h1
         ref={headingRef}
         tabIndex={-1}
-        className="mt-2 text-4xl font-bold tracking-tight text-ink focus:outline-none sm:text-5xl"
+        className="mt-8 text-4xl font-bold tracking-tight text-ink focus:outline-none sm:text-5xl"
       >
         {requirement.name}
       </h1>
+      <p className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1">
+        <span className="font-medium text-accent-ink">Issued by {requirement.agencyName}</span>
+        <ModeTag mode={requirement.mode} />
+      </p>
       <p className="mt-6 text-lg leading-relaxed text-ink-muted">{requirement.summary}</p>
-      <p className="mt-2 text-sm font-medium text-ink-muted">How you get it: {modeLabels[requirement.mode]}</p>
 
       {/* The same checkmark as the envelope on the home page */}
-      <label className="mt-6 flex cursor-pointer items-center gap-1 rounded-2xl bg-surface-raised py-1 pr-5 ring-1 ring-separator">
+      <label className="mt-6 flex cursor-pointer items-center gap-1 rounded-lg bg-surface-raised py-1 pr-5 ring-1 ring-separator">
         <ReadyCheckbox
           checked={isDone(requirement.id)}
-          onChange={() => toggle(requirement.id)}
+          onChange={() => {
+            if (!isDone(requirement.id)) setJustStamped(requirement.id)
+            toggle(requirement.id)
+          }}
           label="Ready"
         />
-        <span>
+        <span className="min-w-0 flex-1">
           <span className="block font-semibold text-ink">Ready</span>
           <span className="block text-sm text-ink-muted">
             Check this when the document is in your envelope.
           </span>
         </span>
+        {isDone(requirement.id) && (
+          <span
+            aria-hidden="true"
+            className={`stamp shrink-0 text-sm text-stamp ${
+              justStamped === requirement.id ? 'motion-safe:animate-stamp' : ''
+            }`}
+          >
+            Ready
+          </span>
+        )}
       </label>
 
       {/* Cost and how to get it for free */}
-      <dl className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-2xl bg-separator ring-1 ring-separator sm:grid-cols-2">
+      <dl className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-lg bg-separator ring-1 ring-separator sm:grid-cols-2">
         <div className="bg-surface-raised p-5">
           <dt className="text-sm font-medium text-ink-muted">Cost</dt>
           <dd className="mt-1 text-ink">{requirement.cost ?? 'Free'}</dd>
@@ -154,7 +172,7 @@ function RequirementPage() {
       )}
 
       {requirement.tips.length > 0 && (
-        <section className="mt-10 rounded-2xl bg-surface-raised p-6 ring-1 ring-separator">
+        <section className="mt-10 border-l-4 border-kraft py-1 pl-5">
           <h2 className="text-lg font-semibold text-ink">Tips</h2>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-ink-muted marker:text-outline">
             {requirement.tips.map((tip) => (
@@ -172,7 +190,7 @@ function RequirementPage() {
       {next && (
         <Link
           to={`/requirements/${next.id}`}
-          className="mt-10 flex items-center justify-between gap-4 rounded-2xl p-5 ring-1 ring-separator transition hover:ring-outline active:bg-accent-soft"
+          className="mt-10 flex items-center justify-between gap-4 rounded-lg p-5 ring-1 ring-separator transition-colors hover:bg-accent-soft/60 active:bg-accent-soft"
         >
           <span>
             <span className="block text-sm text-ink-muted">Next document</span>
