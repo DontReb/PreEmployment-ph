@@ -1,13 +1,8 @@
-import { Route, Routes } from 'react-router'
+import { Outlet } from 'react-router'
 import { Analytics } from '@vercel/analytics/react'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import ScrollManager from './components/ScrollManager.jsx'
-import HomePage from './pages/HomePage.jsx'
-import RequirementPage from './pages/RequirementPage.jsx'
-import ChecklistPage from './pages/ChecklistPage.jsx'
-import AccountPage from './pages/AccountPage.jsx'
-import NotFoundPage from './pages/NotFoundPage.jsx'
 
 function App() {
   return (
@@ -26,14 +21,8 @@ function App() {
       </a>
       <Navbar />
       <main id="main" tabIndex={-1} className="mx-auto w-full max-w-5xl flex-1 px-4 focus:outline-none">
-        {/* Only the route that matches the current URL is shown */}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/requirements/:id" element={<RequirementPage />} />
-          <Route path="/checklist" element={<ChecklistPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        {/* The page that matches the current URL (the routes are listed in main.jsx) */}
+        <Outlet />
       </main>
       <Footer />
       {/* Counts visits anonymously (no cookies). Shows up in Vercel → Analytics.

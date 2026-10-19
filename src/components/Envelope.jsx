@@ -1,23 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import requirements from '../data/requirements.js'
 import useProgress from '../progress/useProgress.js'
 import ReadyCheckbox from './ui/ReadyCheckbox.jsx'
 import SyncStatus from '../account/SyncStatus.jsx'
-
-// The papers slide into the envelope only the first time it appears after the
-// site loads, not every time someone comes back to the home page.
-let introPlayed = false
+import useIntroOnce from '../hooks/useIntroOnce.js'
 
 // The signature element: the long brown envelope every Filipino applicant
 // carries to their first interview, with the documents tucked inside.
 // Ticking a paper stamps it "Ready"; all of them ready stamps the envelope.
 function Envelope() {
   const { isDone, toggle, reset } = useProgress()
-  const [playIntro] = useState(() => !introPlayed)
-  useEffect(() => {
-    introPlayed = true
-  }, [])
+  // Papers slide in only the first time the envelope appears (see useIntroOnce)
+  const playIntro = useIntroOnce()
 
   // Only stamps the person just made get the landing animation,
   // so stamps that were already there don't all thump on page load
@@ -34,6 +29,23 @@ function Envelope() {
     toggle(id)
   }
 
+  // The envelope leans gently toward the mouse, like picking it up off a desk.
+  // Mouse only (not touch), and off when someone prefers less motion.
+  function handleTilt(event) {
+    if (event.pointerType !== 'mouse') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const box = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - box.left) / box.width - 0.5
+    const y = (event.clientY - box.top) / box.height - 0.5
+    event.currentTarget.style.setProperty('--tilt-x', `${(-y * 6).toFixed(2)}deg`)
+    event.currentTarget.style.setProperty('--tilt-y', `${(x * 6).toFixed(2)}deg`)
+  }
+
+  function resetTilt(event) {
+    event.currentTarget.style.setProperty('--tilt-x', '0deg')
+    event.currentTarget.style.setProperty('--tilt-y', '0deg')
+  }
+
   function handleClear() {
     // Clearing can't be undone, so ask first
     if (window.confirm(`Clear all ${readyCount} checkmarks? This can’t be undone.`)) {
@@ -45,7 +57,9 @@ function Envelope() {
     <div className="mx-auto w-full max-w-sm">
       <figure
         aria-labelledby="envelope-title"
-        className="relative w-full rounded-3xl bg-kraft p-5 pb-0 shadow-[0_24px_48px_-24px_rgb(59_42_20/0.45)]"
+        onPointerMove={handleTilt}
+        onPointerLeave={resetTilt}
+        className="relative w-full rounded-3xl bg-kraft p-5 pb-0 shadow-[0_24px_48px_-24px_rgb(59_42_20/0.45)] [transform:perspective(900px)_rotateX(var(--tilt-x,0deg))_rotateY(var(--tilt-y,0deg))] transition-transform duration-500 ease-out"
       >
         <figcaption className="flex flex-wrap items-baseline justify-between gap-x-3 px-1 text-kraft-ink">
           <span id="envelope-title" className="font-display font-semibold">
@@ -92,6 +106,7 @@ function Envelope() {
                 />
                 <Link
                   to={`/requirements/${item.id}`}
+                  viewTransition
                   className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-0.5 py-2.5 hover:underline"
                 >
                   <span className="min-w-0 flex-1 font-medium text-slip-ink [overflow-wrap:anywhere]">

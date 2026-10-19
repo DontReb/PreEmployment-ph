@@ -41,9 +41,33 @@
   --color-stamp-paper: #2a4a9c;     /* on paper slips (light in both modes), 5.5:1+ */
   --color-stamp-kraft: #2a4a9c;     /* large stamp on the envelope, 4.4:1 */
 
+  /* "Now serving" yellow, like a queue display. Used ONLY for the dock's main
+     button and the highlighted ticket number. Ink on yellow: 10.7:1 */
+  --color-signal: #ffd84d;
+  --color-on-signal: #1f2a27;
+
+  /* The floating dock */
+  --color-dock: #1f2a27;
+  --color-on-dock: #f3f8f6;         /* 13.8:1 */
+  --color-dock-muted: #a7b6b0;      /* 7.0:1 */
+  --color-dock-hover: #2f3d38;
+
+  /* Secondary text on the bold sage panel */
+  --color-on-accent-muted: #e2eee9; /* 5.3:1 */
+
   /* The two motions: papers slide into the envelope once, stamps land on tick */
   --animate-paper-in: paper-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-stamp: stamp-in 260ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+  --animate-rise-in: rise-in 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  @keyframes rise-in {
+    from {
+      transform: translateY(105%);
+    }
+    to {
+      transform: none;
+    }
+  }
 
   @keyframes paper-in {
     from {
@@ -90,6 +114,10 @@
     --color-slip-muted: #4b5a55;    /* 4.9:1 */
 
     --color-stamp: #a9bcff;         /* 9.0:1+ */
+    --color-dock: #2a3833;
+    --color-dock-muted: #b3c1bb;    /* 6.6:1 */
+    --color-dock-hover: #34443e;
+    --color-on-accent-muted: #1f2b27; /* 7.4:1 */
     --color-stamp-kraft: #1f3a85;   /* 3.0:1, large bold text only */
   }
 }
@@ -125,8 +153,12 @@
 @layer base {
   :root {
     color-scheme: light dark;
-    /* Keep anything scrolled into view (like keyboard focus) below the sticky navbar */
+    /* The canvas behind everything, so transitions never flash white */
+    background-color: var(--color-surface);
+    /* Keep anything scrolled into view (like keyboard focus) below the sticky
+       navbar and above the floating dock */
     scroll-padding-top: 5rem;
+    scroll-padding-bottom: 6rem;
   }
 
   /* Long words (like "Requirements" at very large text sizes) wrap
@@ -170,3 +202,35 @@
     scroll-behavior: smooth;
   }
 }
+
+/* Page transitions (View Transitions API). The new page fades and rises in
+   over the old one. Elements with a matching view-transition-name, like a
+   document's title, morph from where they were to where they land. Browsers
+   without support simply switch pages instantly. */
+::view-transition-old(root) {
+  /* The old page stays put underneath, so there's never a blank moment */
+  animation: none;
+}
+::view-transition-new(root) {
+  animation: 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both page-in;
+}
+::view-transition-group(requirement-title) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+

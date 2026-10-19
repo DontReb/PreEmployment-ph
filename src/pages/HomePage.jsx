@@ -3,6 +3,7 @@ import Requirements from '../components/Requirements.jsx'
 import Guides from '../components/Guides.jsx'
 import FAQs from '../components/FAQs.jsx'
 import Contact from '../components/Contact.jsx'
+import NowServingDock from '../components/NowServingDock.jsx'
 
 function HomePage() {
   return (
@@ -12,6 +13,7 @@ function HomePage() {
       <Guides />
       <FAQs />
       <Contact />
+      <NowServingDock />
     </>
   )
 }

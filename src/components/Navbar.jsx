@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import useActiveSection from '../hooks/useActiveSection.js'
 import useAuth from '../account/useAuth.js'
+import useSlidingIndicator from '../hooks/useSlidingIndicator.js'
+import SlidingPill from './ui/SlidingPill.jsx'
+import RollText from './ui/RollText.jsx'
 
 const links = [
   { id: 'home', label: 'Home' },
@@ -26,6 +29,8 @@ function Navbar() {
   const { enabled: accountsEnabled, user } = useAuth()
   const accountLabel = user ? 'Account' : 'Sign in'
   const onAccountPage = pathname === '/account'
+  // The highlight pill slides to whichever section is active
+  const { containerRef: navRef, box: activeBox } = useSlidingIndicator(activeId)
 
   // Escape closes the phone menu and puts keyboard focus back on the button
   useEffect(() => {
@@ -53,21 +58,21 @@ function Navbar() {
         </Link>
 
         {/* Desktop links: hidden on small screens, shown from md (768px) up */}
-        <ul className="hidden gap-1 md:ml-auto md:flex">
+        <ul ref={navRef} className="relative hidden gap-1 md:ml-auto md:flex">
+          <SlidingPill box={activeBox} className="bg-accent-soft" />
           {links.map((link) => {
             const isActive = link.id === activeId
             return (
               <li key={link.id}>
                 <Link
                   to={`/#${link.id}`}
+                  data-indicator-key={link.id}
                   aria-current={isActive ? 'location' : undefined}
-                  className={`block rounded-full px-4 py-2 text-sm font-medium transition-colors active:bg-accent-soft ${
-                    isActive
-                      ? 'bg-accent-soft text-accent-ink'
-                      : 'text-ink-muted hover:text-ink'
+                  className={`group/roll relative block rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 active:bg-accent-soft ${
+                    isActive ? 'text-accent-ink' : 'text-ink-muted hover:text-ink'
                   }`}
                 >
-                  {link.label}
+                  <RollText>{link.label}</RollText>
                 </Link>
               </li>
             )
@@ -78,9 +83,9 @@ function Navbar() {
           <Link
             to="/account"
             aria-current={onAccountPage ? 'page' : undefined}
-            className="hidden min-h-9 items-center rounded-full px-4 text-sm font-semibold text-accent-ink ring-1 ring-outline transition-colors hover:bg-accent-soft active:bg-accent-soft md:ml-2 md:inline-flex"
+            className="group/roll hidden min-h-9 items-center rounded-full px-4 text-sm font-semibold text-accent-ink ring-1 ring-outline transition-colors hover:bg-accent-soft active:bg-accent-soft md:ml-2 md:inline-flex"
           >
-            {accountLabel}
+            <RollText>{accountLabel}</RollText>
           </Link>
         )}
 
