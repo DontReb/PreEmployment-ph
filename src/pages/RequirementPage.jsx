@@ -36,6 +36,7 @@ function RequirementPage() {
 
       <Link
         to="/#requirements"
+        viewTransition
         className="inline-flex min-h-11 items-center gap-1 rounded-full pr-3 font-medium text-accent-ink hover:underline"
       >
         <Icon name="chevronLeft" />
@@ -46,6 +47,7 @@ function RequirementPage() {
         ref={headingRef}
         tabIndex={-1}
         className="mt-8 text-4xl font-bold tracking-tight text-ink focus:outline-none sm:text-5xl"
+        style={{ viewTransitionName: 'requirement-title' }}
       >
         {requirement.name}
       </h1>
@@ -190,6 +192,7 @@ function RequirementPage() {
       {next && (
         <Link
           to={`/requirements/${next.id}`}
+          viewTransition
           className="mt-10 flex items-center justify-between gap-4 rounded-lg p-5 ring-1 ring-separator transition-colors hover:bg-accent-soft/60 active:bg-accent-soft"
         >
           <span>

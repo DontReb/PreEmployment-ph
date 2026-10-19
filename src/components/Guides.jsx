@@ -8,12 +8,12 @@ const nameById = Object.fromEntries(requirements.map((item) => [item.id, item.na
 function Guides() {
   return (
     <Section id="guides" title="Guides">
-      {/* Guide 1: the free documents law */}
-      <div className="rounded-lg bg-surface-raised p-6 ring-1 ring-separator sm:p-8">
-        <h3 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+      {/* Guide 1: the free documents law, as the page's one bold color panel */}
+      <div className="rounded-[2rem] bg-accent p-6 text-on-accent-muted sm:p-10">
+        <h3 className="text-2xl font-bold tracking-tight text-on-accent sm:text-4xl">
           Get most documents free with RA 11261
         </h3>
-        <p className="mt-3 max-w-2xl">
+        <p className="mt-4 max-w-2xl text-lg">
           The First Time Jobseekers Assistance Act removes government fees for first-time job
           seekers. Get a First-Time Jobseeker Certification from your barangay, then show it at
           each office.
@@ -21,16 +21,16 @@ function Guides() {
 
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <h4 className="font-semibold text-ink">Free with your certification</h4>
-            <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-outline">
+            <h4 className="font-semibold text-on-accent">Free with your certification</h4>
+            <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-on-accent-muted">
               {freeDocuments.covered.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-ink">Not covered</h4>
-            <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-outline">
+            <h4 className="font-semibold text-on-accent">Not covered</h4>
+            <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-on-accent-muted">
               {freeDocuments.notCovered.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -38,8 +38,8 @@ function Guides() {
           </div>
         </div>
 
-        <h4 className="mt-6 font-semibold text-ink">Rules</h4>
-        <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-outline">
+        <h4 className="mt-6 font-semibold text-on-accent">Rules</h4>
+        <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-on-accent-muted">
           {freeDocuments.rules.map((rule) => (
             <li key={rule}>{rule}</li>
           ))}
